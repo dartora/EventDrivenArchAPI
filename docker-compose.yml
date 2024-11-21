@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:3000"
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: npm run start:dev 
+    environment:
+      - NODE_ENV=development
+      
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
