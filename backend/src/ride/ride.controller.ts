@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RideService } from './ride.service';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
@@ -17,18 +17,22 @@ export class RideController {
     return this.rideService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rideService.findOne(+id);
+  @Get(':customer_id')
+  findOne(@Param('customer_id') customerId: string, @Query('driver_id') driverId?: string) {
+    return this.rideService.findOne(+customerId, driverId);
   }
-
-  @Patch(':id')
+  @Post('estimate')
+  estimate(@Param('id') id: string) {
+    return this.rideService.estimate(+id);
+  }
+  
+  @Patch('confirm')
   update(@Param('id') id: string, @Body() updateRideDto: UpdateRideDto) {
     return this.rideService.update(+id, updateRideDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.rideService.remove(+id);
+    return this.rideService.estimate(+id);
   }
 }

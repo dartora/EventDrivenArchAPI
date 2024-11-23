@@ -9,10 +9,10 @@ export class RideService {
   }
 
   findAll() {
-    return `This action returns all ride`;
+    return `This action returns alls ride`;
   }
 
-  findOne(id: number) {
+  findOne(id: number, driverId?: string) {
     return `This action returns a #${id} ride`;
   }
 
@@ -22,5 +22,13 @@ export class RideService {
 
   remove(id: number) {
     return `This action removes a #${id} ride`;
+  }
+  
+  estimate(createRideDto: CreateRideDto) {
+    return 'Esse endpoint deve fazer as seguintes validações: Os endereços de origem e destino recebidos não podem estar em branco. O id do usuário não pode estar em branco. ' +
+           '● Os endereços de origem e destino não podem ser o mesmo endereço. ' +
+           'Após as validações, ele deve: ' +
+           '● Calcular a rota entre a origem e destino usando a API Routes do Google Maps. ' +
+           '● Com base no retorno, deve listar os motoristas disponíveis para a viagem de acordo com a quilometragem mínima que aceitam, cada um com seu respectivo valor, usando como base a seguinte tabela.';
   }
 }

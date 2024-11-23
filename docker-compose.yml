@@ -10,6 +10,9 @@ services:
     command: npm run start:dev 
     environment:
       - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_USER=your_username
+      - DATABASE_PASSWORD=your_password
       
 
   frontend:
@@ -19,3 +22,17 @@ services:
       - "80:80"
     depends_on:
       - backend
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
