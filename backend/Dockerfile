@@ -5,5 +5,9 @@ COPY package*.json ./
 # RUN npm install @nestjs/sequelize sequelize sequelize-typescript pg pg-hstore
 RUN npm install
 COPY . .
+COPY .env ./
+# Build the application (if necessary)
+RUN npm run build
 EXPOSE 8080
-CMD ["npm", "run", "start:prod"]
+# Start the application
+CMD ["npm", "run","start:prod"]
