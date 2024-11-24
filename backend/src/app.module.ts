@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Driver } from '../models/driverModel';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -13,10 +12,10 @@ import { AppService } from './app.service';
       username: 'your_username',
       password: 'your_password',
       database: 'postgres',
-      models: [Driver],
+      models: [__dirname + '/models'],
       autoLoadModels: true,
       synchronize: true,
-    }),
+    }),    
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Driver } from './models/driverModel'; // Import your model
 // Create a new instance of Sequelize
 const sequelize = new Sequelize({
   database: 'postgres',             // Database name
@@ -7,7 +6,7 @@ const sequelize = new Sequelize({
   password: 'your_password',        // Database password
   host: 'postgres',                 // Host (use 'postgres' for Docker or 'localhost' for local)
   dialect: 'postgres',              // Database dialect
-  models: [Driver],  // Path to your models directory
+  models: [__dirname + '/models'],  // Path to your models directory
   logging: false,                   // Disable logging; enable if debugging
 });
 
