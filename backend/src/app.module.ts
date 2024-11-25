@@ -3,6 +3,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RideController } from './ride/ride.controller';
+import { RideService } from './ride/ride.service';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService], // Inject ConfigService to access env variables
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, RideController],
+  providers: [AppService, RideService],
 })
 export class AppModule {}
