@@ -2,11 +2,11 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'React PWA';
+const title = 'SHOPPER';
 
 const email = 'auther-email@gmail.com';
 
-const repository = 'https://github.com/suren-atoyan/react-pwa';
+const repository = 'https://github.com/dartora/shopper_test';
 
 const messages = {
   app: {

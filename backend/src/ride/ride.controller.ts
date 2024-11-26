@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { RideService } from './ride.service';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
+import { CreateEstimateRideDto } from './dto/create-estimate-ride.dto';
 
 @Controller('ride')
 export class RideController {
@@ -22,8 +23,8 @@ export class RideController {
     return this.rideService.findOne(+customerId, driverId);
   }
   @Post('estimate')
-  estimate(@Param('id') id: string) {
-    return this.rideService.estimate(+id);
+  estimate(@Body() createEstimateRideDto: CreateEstimateRideDto) {
+    return this.rideService.estimate(createEstimateRideDto);
   }
   
   @Patch('confirm')
@@ -32,7 +33,7 @@ export class RideController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rideService.estimate(+id);
+  remove(@Param('id') id: number) {
+    return this.rideService.remove(id);
   }
 }

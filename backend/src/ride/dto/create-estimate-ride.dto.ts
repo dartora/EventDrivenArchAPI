@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateRideDto {
+export class CreateEstimateRideDto {
   @IsNotEmpty()
   @IsString()
   userId!: number;
