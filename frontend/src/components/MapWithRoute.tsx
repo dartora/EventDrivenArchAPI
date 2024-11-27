@@ -10,28 +10,35 @@ const center = { lat: -27.595378, lng: -48.54805 }; // Adjust as needed
 
 const MapWithRoute = ({ routeData }: { routeData: any }) => {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY, // Use empty string as fallback
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     });
     const [path, setPath] = useState<google.maps.LatLngLiteral[]>([]);
+    const [mapCenter, setMapCenter] = useState(center);
 
     useEffect(() => {
-        if (routeData?.overview_polyline) {
+        console.log('RouteData in MapWithRoute:', routeData);
+        if (routeData?.overview_polyline?.points) {
             const decodedPath = decodePolyline(routeData.overview_polyline.points);
-            console.log("Decoded path:", decodedPath); // Debugging line
-
+            console.log("Decoded path:", decodedPath);
             setPath(decodedPath);
+
+            // Set map center to the first point of the route
+            if (decodedPath.length > 0) {
+                setMapCenter(decodedPath[0]);
+            }
         } else {
-            console.error("Invalid route data:", routeData); // Error handling
+            console.error("Invalid route data:", routeData);
         }
     }, [routeData]);
 
-    if (!isLoaded) return <div>Loading...</div>;
+    if (!isLoaded) return <div>Loading Maps API...</div>;
+    if (!routeData) return <div>No route data available</div>;
 
     return (
         <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            center={center}
-            zoom={10}
+            center={mapCenter}
+            zoom={12}
         >
             {path.length > 0 && (
                 <Polyline

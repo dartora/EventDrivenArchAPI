@@ -40,14 +40,26 @@ const Page2 = () => {
 
   useEffect(() => {
     if (location.state) {
-      // console.log('Location state:', location.state);
+      console.log('Full location state:', location.state);
+      console.log('Route from state:', location.state.route);
       setDrivers(location.state.travelOptions);
       setDistance(location.state.distance);
-      setRoute(location.state.route[0]);
+      if (location.state.route && location.state.route.length > 0) {
+        console.log('Setting route with:', location.state.route[0]);
+        setRoute(location.state.route[0]);
+      }
     }
   }, [location.state]);
 
-  console.log('Current route:', route);
+  // Only render map if route data is available
+  const renderMap = () => {
+    console.log('Rendering map with route:', route);
+    if (route && route.overview_polyline) {
+      return <MapWithRoute routeData={route} />;
+    }
+    console.log('Missing route data for map');
+    return <Typography>Loading map...</Typography>;
+  };
 
   if (!drivers.length || distance === null || !route) {
     return (
@@ -63,8 +75,7 @@ const Page2 = () => {
 
   return (
     <Container>
-
-      <MapWithRoute routeData={route} />
+      {renderMap()}
 
       <Typography variant="h6" gutterBottom>
         Motoristas Disponíveis:

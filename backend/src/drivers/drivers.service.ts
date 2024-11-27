@@ -12,7 +12,7 @@ export class DriversService {
   }
 
   findAll() {
-    return this.driverModel.findAll();
+    return this.driverModel.findAll({ order: [['TAXA_KM', 'DESC']] });
   }
 
   findOne(id: number) {
