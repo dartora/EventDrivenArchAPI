@@ -37,6 +37,11 @@ function SolicitarViagem() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
+
+            if (!response.ok) {
+                console.error('Fetch error:', response.statusText);
+                return; // Exit if the response is not ok
+            }
             const data = await response.json();
             setTravelOptions(data);
             navigate('/page-2', { state: { travelOptions: data.availableDrivers, distance: data.distanceInKm, route: data.route } });

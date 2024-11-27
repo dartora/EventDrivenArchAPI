@@ -4,7 +4,7 @@ import type { Notifications } from './types';
 
 const title = 'SHOPPER MOVING';
 
-const email = 'auther-email@gmail.com';
+const email = 'rodolfo.dartora.da.silva@gmail.com';
 
 const repository = 'https://github.com/dartora/shopper_test';
 
