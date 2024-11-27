@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "type": "module",
   "description": "Starter kit for modern web applications",
-  "homepage": "https://react-pwa.surenatoyan.com/",
+  "HistoricoViagempage": "https://react-pwa.surenatoyan.com/",
   "repository": {
     "type": "git",
     "url": "https://github.com/suren-atoyan/react-pwa.git"

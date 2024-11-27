@@ -4,8 +4,8 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('drivers', [
       {
-        NAME: 'Homer Simpson',
-        DESCRIPTION: 'Olá! Sou o Homer, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).',
+        NAME: 'HistoricoViagemr Simpson',
+        DESCRIPTION: 'Olá! Sou o HistoricoViagemr, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).',
         CAR: 'Plymouth Valiant 1973 rosa e enferrujado',
         TAXA_KM: 2.50,
         MINIMO: 1,

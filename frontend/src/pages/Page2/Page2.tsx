@@ -40,7 +40,7 @@ const Page2 = () => {
 
   useEffect(() => {
     if (location.state) {
-      console.log('Location state:', location.state);
+      // console.log('Location state:', location.state);
       setDrivers(location.state.travelOptions);
       setDistance(location.state.distance);
       setRoute(location.state.route[0]);
@@ -52,8 +52,10 @@ const Page2 = () => {
   if (!drivers.length || distance === null || !route) {
     return (
       <Container>
-        <Typography variant="h5" color="error">
-          No travel options, distance, or route available. Please go back and try again.
+        <Typography variant="h5" >
+          Nenhuma opção de viagem, distância ou rota disponível.
+          <br />
+          Por favor, volte e tente novamente.
         </Typography>
       </Container>
     );
@@ -65,7 +67,7 @@ const Page2 = () => {
       <MapWithRoute routeData={route} />
 
       <Typography variant="h6" gutterBottom>
-        Available Drivers:
+        Motoristas Disponíveis:
       </Typography>
       <List>
         {drivers.map((driver) => (
@@ -79,7 +81,9 @@ const Page2 = () => {
                   </Typography>
                   <br />
                   <Typography component="span" variant="body2" color="text.secondary">
-                    Car: {driver.CAR} - Cost: {driver.tripCost}
+                    Carro: {driver.CAR}
+                    <br />
+                    Valor: {driver.tripCost}
                   </Typography>
                 </>
               }
