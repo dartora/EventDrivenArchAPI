@@ -17,7 +17,11 @@ const MapWithRoute = ({ routeData }: { routeData: any }) => {
     useEffect(() => {
         if (routeData?.overview_polyline) {
             const decodedPath = decodePolyline(routeData.overview_polyline.points);
+            console.log("Decoded path:", decodedPath); // Debugging line
+
             setPath(decodedPath);
+        } else {
+            console.error("Invalid route data:", routeData); // Error handling
         }
     }, [routeData]);
 
