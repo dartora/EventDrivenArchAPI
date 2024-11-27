@@ -12,7 +12,6 @@ const MapWithRoute = ({ routeData }: { routeData: any }) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY, // Use empty string as fallback
     });
-
     const [path, setPath] = useState<google.maps.LatLngLiteral[]>([]);
 
     useEffect(() => {
