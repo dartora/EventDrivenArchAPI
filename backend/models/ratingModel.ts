@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Driver } from './driverModel'; // Import the Driver model
 
 @Table({
@@ -26,10 +26,13 @@ export class Rating extends Model<Rating> {
   })
   comment!: string;
 
-  @ForeignKey(() => Driver) // Establish foreign key relationship
+  @ForeignKey(() => Driver)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  driverId: number; // Reference to the Driver model
+  driverId!: number;
+
+  @BelongsTo(() => Driver)
+  driver!: Driver;
 } 

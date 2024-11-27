@@ -43,6 +43,6 @@ export class Driver extends Model<Driver> {
   })
   MINIMO!: number;
 
-   @HasMany(() => Rating) // Establish one-to-many relationship
+  @HasMany(() => Rating)
   ratings!: Rating[];
 }

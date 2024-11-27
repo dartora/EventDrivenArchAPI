@@ -3,8 +3,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RideModule } from './ride/ride.module';
 import { RideController } from './ride/ride.controller';
 import { RideService } from './ride/ride.service';
+import { HttpModule } from '@nestjs/axios';
+import { DriversModule } from './drivers/drivers.module';
+import { DriversController } from './drivers/drivers.controller';
+import { DriversService } from './drivers/drivers.service';
+
 
 @Module({
   imports: [
@@ -13,7 +19,7 @@ import { RideService } from './ride/ride.service';
       envFilePath: '.env', // Path to your .env file
     }),
     SequelizeModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule,DriversModule, RideModule],
       useFactory: async (configService: ConfigService) => ({
         dialect: configService.get<'postgres' | 'mysql' | 'sqlite' | 'mssql'>('DB_DIALECT'),
         host: configService.get<string>('DB_HOST'),
@@ -26,8 +32,13 @@ import { RideService } from './ride/ride.service';
       }),
       inject: [ConfigService], // Inject ConfigService to access env variables
     }),
+        HttpModule.register({
+      timeout: 5000, // Tempo limite em ms
+      maxRedirects: 5, // Número máximo de redirecionamentos
+    }),
+      
   ],
-  controllers: [AppController, RideController],
-  providers: [AppService, RideService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

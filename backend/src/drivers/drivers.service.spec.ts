@@ -1,16 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RideService } from './ride.service';
-import { describe, expect, it, beforeEach } from '@jest/globals';
+import { DriversService } from './drivers.service';
 
-describe('RideService', () => {
-  let service: RideService;
+describe('DriversService', () => {
+  let service: DriversService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RideService],
+      providers: [DriversService],
     }).compile();
 
-    service = module.get<RideService>(RideService);
+    service = module.get<DriversService>(DriversService);
   });
 
   it('should be defined', () => {

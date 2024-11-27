@@ -7,14 +7,20 @@ import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
 function Page1() {
+  // Define a type for travel options
+  type TravelOption = {
+    description: string;
+    price: number;
+  };
+
   const [formData, setFormData] = useState({
     userId: '',
     origin: '',
     destination: '',
   });
-  const [travelOptions, setTravelOptions] = useState(null);
+  const [travelOptions, setTravelOptions] = useState<TravelOption[] | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -93,7 +99,7 @@ function Page1() {
             <Typography variant="h5" textAlign="center" gutterBottom>
               Opções de Viagem
             </Typography>
-            {travelOptions.map((option, index) => (
+            {travelOptions.map((option: TravelOption, index: number) => (
               <Box
                 key={index}
                 sx={{
