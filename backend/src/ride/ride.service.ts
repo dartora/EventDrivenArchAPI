@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateRideDto } from './dto/create-ride.dto';
-import { UpdateRideDto } from './dto/update-ride.dto';
+// import { UpdateRideDto } from './dto/update-ride.dto';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { DriversService } from '../drivers/drivers.service';
+import { Driver } from 'models/driverModel';
+import { EstimateRideDto } from './dto/estimate-ride.dto';
 
 @Injectable()
 export class RideService {
@@ -17,9 +18,9 @@ export class RideService {
   private readonly GOOGLE_MAPS_API_URL = this.configService.get<string>('GOOGLE_MAPS_API_URL');
   private readonly GOOGLE_MAPS_API_KEY = this.configService.get<string>('GOOGLE_API_KEY');
 
-  create(createRideDto: CreateRideDto) {
-    return 'This action adds a new ride';
-  }
+  // create(createRideDto: CreateRideDto) {
+  //   return 'This action adds a new ride';
+  // }
 
   findAll() {
     return `This action returns alls ride`;
@@ -29,17 +30,17 @@ export class RideService {
     return `This action returns a #${id} ride`;
   }
 
-  update(id: number, updateRideDto: UpdateRideDto) {
-    return `This action updates a #${id} ride`;
-  }
+  // update(id: number, updateRideDto: UpdateRideDto) {
+  //   return `This action updates a #${id} ride`;
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} ride`;
   }
   
- async estimate(createRideDto: CreateRideDto) {
-    const { userId, origin, destination } = createRideDto;
-   console.log(createRideDto);
+ async estimate(estimateRideDto: EstimateRideDto) {
+    const { userId, origin, destination } = estimateRideDto;
+   console.log(estimateRideDto);
     // Validations
     if (!userId) throw new BadRequestException('User ID cannot be empty.');
     if (!origin || !destination) throw new BadRequestException('Origin and destination cannot be empty.');
@@ -57,23 +58,24 @@ export class RideService {
 
     // Available drivers (mocked or fetched from a database)
  
-   const availableDrivers = await this.driversService.findAll(); // Fetch available drivers
-   console.log(availableDrivers);
+   let drivers = await this.driversService.findAll(); // Fetch available drivers
+   
+   console.log(drivers);
     // Filter drivers who accept the trip based on minimum kilometers
-    // const availableDrivers = drivers
-    //   .filter((driver) => distanceInKm >= driver.minKm)
-    //   .map((driver) => ({
-    //     ...driver,
-    //     tripCost: (distanceInKm * driver.pricePerKm).toFixed(2), // Calculate cost
-    //   }));
+    const availableDrivers = drivers
+      .filter((driver: Driver) => distanceInKm >= driver.MINIMO)  // Note: using MINIMO instead of minKm
+      .map((driver: Driver) => ({
+        ...driver.dataValues,
+        tripCost: (distanceInKm * driver.TAXA_KM).toFixed(2),  // Note: using TAXA_KM instead of pricePerKm
+      }));
 
-    // if (availableDrivers.length === 0) throw new BadRequestException('No drivers available for this route.');
+    if (availableDrivers.length === 0) throw new BadRequestException('No drivers available for this route.');
 
-    // return {
-    //   distanceInKm,
-    //   availableDrivers,
-    //   route: routeData.routes, // Simplified route data
-    // };
+    return {
+      distanceInKm,
+      availableDrivers,
+      route: routeData.routes, // Simplified route data
+    };
   }
 
   private async getRouteData(origin: string, destination: string) {

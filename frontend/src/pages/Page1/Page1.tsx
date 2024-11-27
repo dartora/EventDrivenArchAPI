@@ -5,8 +5,12 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
+import { useNavigate } from 'react-router-dom'; // Import useHistory
 
 function Page1() {
+  const navigate = useNavigate(); // Create history object
+
+
   // Define a type for travel options
   type TravelOption = {
     description: string;
@@ -34,7 +38,9 @@ function Page1() {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      setTravelOptions(data.options); // Supondo que a API retorne "data.options"
+      setTravelOptions(data);
+      navigate('/page-2', { state: { travelOptions: data.availableDrivers, distance: data.distanceInKm, route: data.route } });
+
     } catch (error) {
       console.error('Erro ao estimar viagem:', error);
     }
