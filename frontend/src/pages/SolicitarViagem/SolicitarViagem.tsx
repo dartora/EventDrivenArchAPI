@@ -32,7 +32,7 @@ function SolicitarViagem() {
     const handleEstimate = async () => {
         try {
             // Simula uma chamada à API
-            const response = await fetch('http://localhost:8080/ride/estimate', {
+            const response = await fetch(import.meta.env.VITE_BACKEND + '/ride/estimate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

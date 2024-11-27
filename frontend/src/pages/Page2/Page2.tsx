@@ -3,35 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { Container, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
 import MapWithRoute from '../../components/MapWithRoute';
 
-interface Driver {
-  ID: number;
-  NAME: string;
-  DESCRIPTION: string;
-  CAR: string;
-  tripCost: string;
-}
-
-interface Route {
-  bounds: {
-    northeast: { lat: number; lng: number };
-    southwest: { lat: number; lng: number };
-  };
-  legs: Array<{
-    distance: { text: string; value: number };
-    duration: { text: string; value: number };
-    end_address: string;
-    start_address: string;
-    steps: Array<{
-      distance: { text: string; value: number };
-      duration: { text: string; value: number };
-      end_location: { lat: number; lng: number };
-      html_instructions: string;
-      travel_mode: string;
-    }>;
-  }>;
-  overview_polyline: { points: string };
-}
-
 const Page2 = () => {
   const location = useLocation();
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -94,7 +65,10 @@ const Page2 = () => {
                   <Typography component="span" variant="body2" color="text.secondary">
                     Carro: {driver.CAR}
                     <br />
-                    Valor: {driver.tripCost}
+                    {/* Avaliação: {driver.} */}
+                    Avaliação: {driver.ratings.length > 0 ? driver.ratings[0].STARS + ' estrelas' : 'Sem avaliações'}
+                    <br />
+                    Valor: R${driver.tripCost}
                   </Typography>
                 </>
               }

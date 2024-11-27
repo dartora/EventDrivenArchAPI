@@ -11,28 +11,28 @@ export class Rating extends Model<Rating> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id!: number;
+  ID!: number;
 
   @Column({
     type: DataType.FLOAT,
     allowNull: false,
-    validate: { min: 0, max: 5 }, // Rating range (0 to 5 stars)
+    validate: { min: 0, max: 5 }, // Rating range (0 to 5 STARS)
   })
-  stars!: number;
+  STARS!: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  comment!: string;
+  COMMENT!: string;
 
   @ForeignKey(() => Driver)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  driverId!: number;
+  DRIVER_ID!: number;
 
   @BelongsTo(() => Driver)
-  driver!: Driver;
+  DRIVER!: Driver;
 } 

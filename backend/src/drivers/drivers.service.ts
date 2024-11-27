@@ -2,6 +2,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Driver } from '../../models/driverModel';
 import { InjectModel } from '@nestjs/sequelize';
+import { Rating } from 'models/ratingModel';
 
 @Injectable()
 export class DriversService {
@@ -12,7 +13,7 @@ export class DriversService {
   }
 
   findAll() {
-    return this.driverModel.findAll({ order: [['TAXA_KM', 'DESC']] });
+    return this.driverModel.findAll({ order: [['TAXA_KM', 'DESC']], include: [Rating]});
   }
 
   findOne(id: number) {

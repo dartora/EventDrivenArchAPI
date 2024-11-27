@@ -4,12 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RideModule } from './ride/ride.module';
-import { RideController } from './ride/ride.controller';
-import { RideService } from './ride/ride.service';
 import { HttpModule } from '@nestjs/axios';
 import { DriversModule } from './drivers/drivers.module';
-import { DriversController } from './drivers/drivers.controller';
-import { DriversService } from './drivers/drivers.service';
 
 
 @Module({
