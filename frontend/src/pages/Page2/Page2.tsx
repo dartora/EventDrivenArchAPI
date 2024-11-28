@@ -42,6 +42,8 @@ const Page2 = () => {
   }
   async function handleDriverSelect(driver: Driver) {
     try {
+      console.log('Location State:', location.state);
+
       const response = await fetch(import.meta.env.VITE_BACKEND + '/ride/confirm', {
         method: 'POST',
         headers: {
@@ -53,7 +55,7 @@ const Page2 = () => {
           driverId: driver.ID,
           distance: distance,
           price: parseFloat(driver.tripCost),
-          userId: idUser,
+          userId: location.state.userId,
         }),
       });
 

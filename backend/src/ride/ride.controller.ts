@@ -6,12 +6,13 @@ import { CreateRideDto } from './dto/create-ride.dto';
 
 @Controller('ride')
 export class RideController {
-  constructor(private readonly rideService: RideService) {}
-
-  // @Post()
-  // create(@Body() createRideDto: CreateRideDto) {
-  //   return this.rideService.create(createRideDto);
-  // }
+  constructor(private readonly rideService: RideService) { }
+  
+  @Post('confirm')
+  create(@Body() createRideDto: CreateRideDto) {
+    console.log(createRideDto);
+    return this.rideService.create(createRideDto);
+  }
 
   @Get()
   findAll() {
@@ -27,10 +28,6 @@ export class RideController {
     return this.rideService.estimate(estimateRideDto);
   }
   
-  @Post('confirm')
-  create(@Param('id') id: number, @Body() createRideDto: CreateRideDto) {
-    return this.rideService.create(id,createRideDto);
-  }
 
   @Delete(':id')
   remove(@Param('id') id: number) {

@@ -15,64 +15,45 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { useState } from 'react';
-
-const mockData = [
-  {
-    id: 1,
-    dateTime: "2024-11-23 15:30",
-    driver: "João Silva",
-    origin: "Rua A, 123",
-    destination: "Av. Brasil, 456",
-    distance: "10 km",
-    time: "25 min",
-    price: "R$ 35,00",
-  },
-  {
-    id: 2,
-    dateTime: "2024-11-22 12:00",
-    driver: "Maria Oliveira",
-    origin: "Rua B, 456",
-    destination: "Av. Paulista, 789",
-    distance: "12 km",
-    time: "30 min",
-    price: "R$ 40,00",
-  },
-  {
-    id: 3,
-    dateTime: "2024-11-20 10:00",
-    driver: "Carlos Lima",
-    origin: "Rua C, 789",
-    destination: "Av. Copacabana, 123",
-    distance: "8 km",
-    time: "20 min",
-    price: "R$ 30,00",
-  },
-];
+import { useEffect, useState } from 'react';
 
 function HistoricoViagem() {
-  const isPortrait = useOrientation();
-
-  const width = isPortrait ? '40%' : '30%';
-  const height = isPortrait ? '30%' : '40%';
 
   const [userId, setUserId] = useState("");
   const [selectedDriver, setSelectedDriver] = useState("todos");
-  const [filteredData, setFilteredData] = useState(mockData);
+  const [loading, setLoading] = useState(false);
+  const [rides, setRides] = useState<Ride[]>([]);
+  const [filteredData, setFilteredData] = useState<Ride[]>([]);
+
+  useEffect(() => {
+    fetchRides();
+  }, []);
+  const fetchRides = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(import.meta.env.VITE_BACKEND + '/ride');
+      const data = await response.json();
+      setRides(data);
+      setFilteredData(data);
+    } catch (error) {
+      console.error('Error fetching rides:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFilter = () => {
-    let filtered = mockData;
-
+    let filtered = rides;
     if (userId) {
-      filtered = filtered.filter((row) => row.id.toString() === userId);
+      filtered = filtered.filter((row) => row.USER_ID.toString() === userId);
     }
-
     if (selectedDriver !== "todos") {
-      filtered = filtered.filter((row) => row.driver === selectedDriver);
+      filtered = filtered.filter((row) => row.DRIVER_ID.toString() === selectedDriver);
     }
 
     setFilteredData(filtered);
   };
+
   return (
     <Box sx={{ padding: 4 }}>
       {/* Filters */}
@@ -102,9 +83,7 @@ function HistoricoViagem() {
             label="Motorista"
           >
             <MenuItem value="todos">Todos</MenuItem>
-            <MenuItem value="João Silva">João Silva</MenuItem>
-            <MenuItem value="Maria Oliveira">Maria Oliveira</MenuItem>
-            <MenuItem value="Carlos Lima">Carlos Lima</MenuItem>
+
           </Select>
         </FormControl>
 
@@ -119,26 +98,24 @@ function HistoricoViagem() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Data e Hora</TableCell>
-              <TableCell>Motorista</TableCell>
+              <TableCell>User Id</TableCell>
               <TableCell>Origem</TableCell>
               <TableCell>Destino</TableCell>
-              <TableCell>Distância</TableCell>
-              <TableCell>Tempo</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Distancia</TableCell>
               <TableCell>Valor</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredData.length > 0 ? (
               filteredData.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.dateTime}</TableCell>
-                  <TableCell>{row.driver}</TableCell>
-                  <TableCell>{row.origin}</TableCell>
-                  <TableCell>{row.destination}</TableCell>
-                  <TableCell>{row.distance}</TableCell>
-                  <TableCell>{row.time}</TableCell>
-                  <TableCell>{row.price}</TableCell>
+                <TableRow key={row.USER_ID}>
+                  <TableCell>{row.DRIVER_ID}</TableCell>
+                  <TableCell>{row.ORIGIN_ADDRESS}</TableCell>
+                  <TableCell>{row.DESTINATION_ADDRESS}</TableCell>
+                  <TableCell>{row.STATUS}</TableCell>
+                  <TableCell>{row.DISTANCE}</TableCell>
+                  <TableCell>{row.PRICE}</TableCell>
                 </TableRow>
               ))
             ) : (

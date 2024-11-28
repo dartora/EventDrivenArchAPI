@@ -32,37 +32,15 @@ export class RideService {
     return driver !== null && distance >= driver.MINIMO;
   }
 
-  async create(id: number, createRideDto: CreateRideDto) {
-    // Função de validação
-    const validateRideData = (createRideDto: CreateRideDto) => {
-      if (!createRideDto.originAddress || !createRideDto.destinationAddress) {
-        throw new Error("Os endereços de origem e destino não podem estar em branco.");
-      }
-      if (!id) {
-        throw new Error("O id do usuário não pode estar em branco.");
-      }
-      if (createRideDto.originAddress === createRideDto.destinationAddress) {
-        throw new Error("Os endereços de origem e destino não podem ser o mesmo endereço.");
-      }
-      if (!createRideDto.driverId || !this.isValidDriver(createRideDto.driverId)) {
-        throw new Error("Uma opção de motorista foi informada e é uma opção válida.");
-      }
-      if (!this.isValidDistance(createRideDto.distance, createRideDto.driverId)) {
-        throw new Error("A quilometragem informada realmente é válida para o motorista selecionado.");
-      }
-
-    };
-     // Valida os dados
-    validateRideData(createRideDto);
-
-    // Cria o objeto para inserir no banco de dados
+  async create(createRideDto: CreateRideDto) {
+  
     const rideData = {
-      USER_ID: id,
+      USER_ID: Number(createRideDto.userId),
       ORIGIN_ADDRESS: createRideDto.originAddress,
       DESTINATION_ADDRESS: createRideDto.destinationAddress,
       DRIVER_ID: Number(createRideDto.driverId),
       DISTANCE: createRideDto.distance,
-      STATUS: 'PENDING',
+      STATUS: 'COMPLETED',
       PRICE: createRideDto.price
     } as Ride;
 
@@ -70,7 +48,7 @@ export class RideService {
   }
 
   findAll() {
-    return `This action returns all rides`;
+    return this.rideRepository.findAll();
   }
 
   findOne(id: number, driverId?: string) {

@@ -49,7 +49,9 @@ function SolicitarViagem() {
                     travelOptions: data.availableDrivers,
                     distance: data.distanceInKm,
                     route: data.route,
-                    userId: formData.userId
+                    userId: formData.userId,
+                    origin: formData.origin,
+                    destination: formData.destination,
                 }
             });
 
