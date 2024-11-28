@@ -16,10 +16,8 @@ const MapWithRoute = ({ routeData }: { routeData: any }) => {
     const [mapCenter, setMapCenter] = useState(center);
 
     useEffect(() => {
-        console.log('RouteData in MapWithRoute:', routeData);
         if (routeData?.overview_polyline?.points) {
             const decodedPath = decodePolyline(routeData.overview_polyline.points);
-            console.log("Decoded path:", decodedPath);
             setPath(decodedPath);
 
             // Set map center to the first point of the route

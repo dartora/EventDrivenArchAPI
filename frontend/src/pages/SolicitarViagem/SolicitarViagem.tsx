@@ -44,7 +44,14 @@ function SolicitarViagem() {
             }
             const data = await response.json();
             setTravelOptions(data);
-            navigate('/page-2', { state: { travelOptions: data.availableDrivers, distance: data.distanceInKm, route: data.route } });
+            navigate('/page-2', {
+                state: {
+                    travelOptions: data.availableDrivers,
+                    distance: data.distanceInKm,
+                    route: data.route,
+                    userId: formData.userId
+                }
+            });
 
         } catch (error) {
             console.error('Erro ao estimar viagem:', error);

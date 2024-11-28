@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { RideService } from './ride.service';
 // import { UpdateRideDto } from './dto/update-ride.dto';
 import { EstimateRideDto } from './dto/estimate-ride.dto';
+import { CreateRideDto } from './dto/create-ride.dto';
 
 @Controller('ride')
 export class RideController {
@@ -26,10 +27,10 @@ export class RideController {
     return this.rideService.estimate(estimateRideDto);
   }
   
-  // @Patch('confirm')
-  // update(@Param('id') id: string, @Body() updateRideDto: UpdateRideDto) {
-  //   return this.rideService.update(+id, updateRideDto);
-  // }
+  @Post('confirm')
+  create(@Param('id') id: number, @Body() createRideDto: CreateRideDto) {
+    return this.rideService.create(id,createRideDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: number) {

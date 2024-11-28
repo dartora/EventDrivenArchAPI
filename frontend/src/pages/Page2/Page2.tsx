@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { Container, Typography, List, ListItem, ListItemText, Divider, Card, CardContent, CardActions, Button } from '@mui/material';
 import MapWithRoute from '../../components/MapWithRoute';
 
 const Page2 = () => {
   const location = useLocation();
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [distance, setDistance] = useState<number | null>(null);
+  const [idUser, setIdUser] = useState<number | null>(null);
   const [route, setRoute] = useState<Route | null>(null);
 
   useEffect(() => {
     if (location.state) {
-      console.log('Full location state:', location.state);
-      console.log('Route from state:', location.state.route);
       setDrivers(location.state.travelOptions);
       setDistance(location.state.distance);
+      setIdUser(location.state.userId);
       if (location.state.route && location.state.route.length > 0) {
-        console.log('Setting route with:', location.state.route[0]);
         setRoute(location.state.route[0]);
       }
     }
@@ -24,11 +23,9 @@ const Page2 = () => {
 
   // Only render map if route data is available
   const renderMap = () => {
-    console.log('Rendering map with route:', route);
     if (route && route.overview_polyline) {
       return <MapWithRoute routeData={route} />;
     }
-    console.log('Missing route data for map');
     return <Typography>Loading map...</Typography>;
   };
 
@@ -43,7 +40,34 @@ const Page2 = () => {
       </Container>
     );
   }
+  async function handleDriverSelect(driver: Driver) {
+    try {
+      const response = await fetch(import.meta.env.VITE_BACKEND + '/ride/confirm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          originAddress: location.state.origin,
+          destinationAddress: location.state.destination,
+          driverId: driver.ID,
+          distance: distance,
+          price: parseFloat(driver.tripCost),
+          userId: idUser,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to create ride');
+      }
+      // Redirect to ride status page or show success message
+      alert('Ride created successfully!');
+      // navigate('/ride-status'); // Uncomment if you have a ride status page
+    } catch (error) {
+      console.error('Error creating ride:', error);
+      alert('Failed to create ride. Please try again.');
+    }
+  }
   return (
     <Container>
       {renderMap()}
@@ -54,25 +78,31 @@ const Page2 = () => {
       <List>
         {drivers.map((driver) => (
           <ListItem key={driver.ID}>
-            <ListItemText
-              primary={driver.NAME}
-              secondary={
-                <>
-                  <Typography component="span" variant="body2" color="text.primary">
-                    {driver.DESCRIPTION}
-                  </Typography>
-                  <br />
-                  <Typography component="span" variant="body2" color="text.secondary">
-                    Carro: {driver.CAR}
-                    <br />
-                    {/* Avaliação: {driver.} */}
-                    Avaliação: {driver.ratings.length > 0 ? driver.ratings[0].STARS + ' estrelas' : 'Sem avaliações'}
-                    <br />
-                    Valor: R${driver.tripCost}
-                  </Typography>
-                </>
-              }
-            />
+            <Card onClick={() => handleDriverSelect(driver)} style={{ cursor: 'pointer' }}> {/* Added Card */}
+              <CardContent>
+                <ListItemText
+                  primary={driver.NAME}
+                  secondary={
+                    <>
+                      <Typography component="span" variant="body2" color="text.primary">
+                        {driver.DESCRIPTION}
+                      </Typography>
+                      <br />
+                      <Typography component="span" variant="body2" color="text.secondary">
+                        Carro: {driver.CAR}
+                        <br />
+                        Avaliação: {driver.ratings.length > 0 ? driver.ratings[0].STARS + ' estrelas' : 'Sem avaliações'}
+                        <br />
+                        Valor: R${driver.tripCost}
+                      </Typography>
+                    </>
+                  }
+                />
+              </CardContent>
+              <CardActions>
+                <Button size="small">Selecionar</Button>
+              </CardActions>
+            </Card>
             <Divider />
           </ListItem>
         ))}
