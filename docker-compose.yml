@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -5,19 +7,16 @@ services:
     ports:
       - "8080:3000"
     volumes:
-      - ./backend:/app
+      - ./backend:/app  # Mapeia o código para o container
     working_dir: /app
-    command: npm run start:dev 
+    command: npm run start:dev  # Usa o modo de desenvolviment
     environment:
       - NODE_ENV=development
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "80:80"
+      - DATABASE_URL=postgres://your_username:your_password@postgres:5432/postgres
+      - RABBITMQ_URL=amqp://rabbitmq:5672
     depends_on:
-      - backend
+      - postgres
+      - rabbitmq
 
   postgres:
     image: postgres:latest
@@ -30,5 +29,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   postgres_data:
+  rabbitmq_data:
