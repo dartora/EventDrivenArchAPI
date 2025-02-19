@@ -1,11 +1,11 @@
 # Estágio 1: Build da aplicação
-FROM node:18 AS builder
+FROM node:22 AS builder
 
 # Define o diretório de trabalho
 WORKDIR /app
 
 # Copia os arquivos de definição de dependências
-COPY package.json package-lock.json* ./
+COPY package*.json ./
 
 # Instala as dependências
 RUN npm install
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Estágio 2: Execução da aplicação
-FROM node:18-alpine
+FROM node:22
 
 # Define o diretório de trabalho
 WORKDIR /app
@@ -31,4 +31,4 @@ COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 
 # Comando para rodar a aplicação
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]

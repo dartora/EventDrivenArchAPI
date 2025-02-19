@@ -1,31 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Event } from './events/entities/event.entity';
+import { User } from './users/entities/user.entity';
 import { EventsModule } from './events/events.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
-    imports: [
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
-        TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        const dbPort = configService.get<number>('DB_PORT');
-        return {
-          type: 'postgres',
-          host: configService.get<string>('DB_HOST'),
-          port: dbPort !== undefined ? dbPort : 5432, // Check for undefined and provide a default
-          username: configService.get<string>('DB_USERNAME'),
-          password: configService.get<string>('DB_PASSWORD'),
-          database: configService.get<string>('DB_DATABASE'),
-          entities: [Event],
-          synchronize: true,
-        };
-      },
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: +configService.get<number>('DB_PORT', 5432), // Converta para número
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [Event, User],
+        synchronize: true, // Apenas para desenvolvimento
+      }),
       inject: [ConfigService],
     }),
     EventsModule,
