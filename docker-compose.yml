@@ -1,19 +1,25 @@
+version: "3.8"
+
 services:
   backend:
     build:
       context: ./backend
     ports:
-      - "8080:3000"
-    volumes:
-      - ./backend:/app  # Mapeia o código para o container
-    working_dir: /app
-    command: npm run start:dev  # Usa o modo de desenvolviment
+      - "3000:3000" # API HTTP
+    command: npm run start:dev
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgres://your_username:your_password@postgres:5432/postgres
-      - RABBITMQ_URL=amqp://rabbitmq:5672
     depends_on:
       - postgres
+      - rabbitmq
+
+  microservice:
+    build:
+      context: ./backend
+    command: npm run start:dev microservice.ts
+    environment:
+      - NODE_ENV=development
+    depends_on:
       - rabbitmq
 
   postgres:
