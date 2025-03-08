@@ -1,11 +1,11 @@
 # Estágio 1: Build da aplicação
-FROM node:22 AS builder
+FROM node:18 AS builder
 
 # Define o diretório de trabalho
 WORKDIR /app
 
 # Copia os arquivos de definição de dependências
-COPY package*.json ./
+COPY package.json package-lock.json* ./
 
 # Instala as dependências
 RUN npm install
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Estágio 2: Execução da aplicação
-FROM node:22
+FROM node:18
 
 # Define o diretório de trabalho
 WORKDIR /app
