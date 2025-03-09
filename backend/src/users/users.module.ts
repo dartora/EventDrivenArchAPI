@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule } from '@nestjs/microservices';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { rabbitmqConfig } from '../microservice/rabbitmq.config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])], // Register the Event entity here
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    ClientsModule.register([
+      {
+        name: 'CONSENT_SERVICE',
+        ...rabbitmqConfig,
+      },
+    ]),
+  ],
   controllers: [UsersController],
   providers: [UsersService],
 })

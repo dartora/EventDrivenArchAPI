@@ -7,6 +7,7 @@ import { EventsModule } from './events/events.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MicroserviceModule } from './microservice/microservice.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AppService } from './app.service';
     }),
     EventsModule,
     UsersModule,
+    MicroserviceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
